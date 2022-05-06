@@ -15,14 +15,17 @@ import (
 type Config struct {
 	Level   string   `json:"level" toml:"level"`
 	Format  string   `json:"format" toml:"format"`
+	Time    string   `json:"time" toml:"time"`
 	File    string   `json:"file" toml:"file"`
 	Outputs []Output `json:"outputs" toml:"outputs"`
 }
 
 type Output struct {
-	Level string `json:"level" toml:"level"`
-	Tag   string `json:"tag" toml:"tag"`
-	File  string `json:"file" toml:"file"`
+	Tag    string `json:"tag" toml:"tag"`
+	Level  string `json:"level" toml:"level"`
+	Format string `json:"format" toml:"format"`
+	Time   string `json:"time" toml:"time"`
+	File   string `json:"file" toml:"file"`
 }
 
 func New(config Config) (*Logger, error) {
@@ -42,23 +45,40 @@ func setup(l *Logger, config *Config) error {
 	if err != nil {
 		return err
 	}
+	hooks := logrus.LevelHooks{}
+	for _, o := range config.Outputs {
+		hook, err := newOutputHook(o)
+		if err != nil {
+			return err
+		}
+		hooks.Add(hook)
+	}
 	l.SetLevel(level)
-	switch strings.ToLower(config.Format) {
-	case "json":
-		l.SetFormatter(&logrus.JSONFormatter{})
+	setFormat(l, config.Format, config.Time)
+	l.SetOutput(output)
+	l.ReplaceHooks(hooks)
+	return nil
+}
+
+func setFormat(l *Logger, format, timeLayout string) {
+	switch strings.ToLower(format) {
+	case "json", "jsonl":
+		l.SetFormatter(&logrus.JSONFormatter{
+			TimestampFormat: ifEmptyAs(timeLayout, DefaultTimeLayout),
+		})
 	case "pretty":
 		l.SetFormatter(&logrus.TextFormatter{
-			DisableColors: false,
-			FullTimestamp: true,
+			DisableColors:   false,
+			FullTimestamp:   true,
+			TimestampFormat: ifEmptyAs(timeLayout, DefaultTimeLayout),
 		})
 	default:
 		l.SetFormatter(&logrus.TextFormatter{
-			DisableColors: true,
-			FullTimestamp: true,
+			DisableColors:   true,
+			FullTimestamp:   true,
+			TimestampFormat: ifEmptyAs(timeLayout, DefaultTimeLayout),
 		})
 	}
-	l.SetOutput(output)
-	return nil
 }
 
 func parseFile(outFn string) (io.Writer, error) {
@@ -116,18 +136,46 @@ func parseFile(outFn string) (io.Writer, error) {
 }
 
 type outputHook struct {
+	tag    string
 	logger *Logger
 }
 
-func newOutputHook(output Output) (*outputHook, error) {
-	// TODO
-	return nil, nil
+func newOutputHook(o Output) (outputHook, error) {
+	level, err := ParseLevel(ifEmptyAs(o.Level, "trace"))
+	if err != nil {
+		return outputHook{}, sderr.Wrap(err, "parse log level error")
+	}
+	output, err := parseFile(o.File)
+	if err != nil {
+		return outputHook{}, err
+	}
+	l := logrus.New()
+	l.SetLevel(level)
+	setFormat(l, o.Format, o.Time)
+	l.SetOutput(output)
+	return outputHook{tag: o.Tag, logger: l}, nil
+
 }
 
-func (h *outputHook) Levels() []Level {
+func (h outputHook) Levels() []Level {
 	return AllLevels
 }
 
-func (h *outputHook) Fire(entry *Entry) error {
+func (h outputHook) Fire(entry *Entry) error {
+	ok := false
+	if h.tag == "" {
+		ok = true
+	} else {
+		if h.tag == entry.Data[TAG] {
+			ok = true
+		}
+	}
+	if ok {
+		if len(entry.Data) > 0 {
+			h.logger.WithTime(entry.Time).WithFields(entry.Data).Log(entry.Level, entry.Message)
+		} else {
+			h.logger.WithTime(entry.Time).Log(entry.Level, entry.Message)
+		}
+	}
 	return nil
 }

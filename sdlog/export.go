@@ -5,14 +5,15 @@ import (
 )
 
 const (
-	TAG        = "tag"
-	PanicLevel = logrus.PanicLevel
-	FatalLevel = logrus.FatalLevel
-	ErrorLevel = logrus.ErrorLevel
-	WarnLevel  = logrus.WarnLevel
-	InfoLevel  = logrus.InfoLevel
-	DebugLevel = logrus.DebugLevel
-	TraceLevel = logrus.TraceLevel
+	TAG               = "tag"
+	DefaultTimeLayout = "2006-01-02 15:04:05.000"
+	PanicLevel        = logrus.PanicLevel
+	FatalLevel        = logrus.FatalLevel
+	ErrorLevel        = logrus.ErrorLevel
+	WarnLevel         = logrus.WarnLevel
+	InfoLevel         = logrus.InfoLevel
+	DebugLevel        = logrus.DebugLevel
+	TraceLevel        = logrus.TraceLevel
 )
 
 type (
@@ -77,6 +78,13 @@ func init() {
 
 func Init(config Config) error {
 	return setup(logrus.StandardLogger(), &config)
+}
+
+func MustInit(config Config) {
+	err := Init(config)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func WithTag(tag string) *logrus.Entry {
