@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/gaorx/stardust4/sderr"
-	"github.com/gaorx/stardust4/sdstr"
+	"github.com/gaorx/stardust4/sdstrings"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -89,7 +89,7 @@ func parseFile(outFn string) (io.Writer, error) {
 		segs := strings.Split(s, ",")
 		m := map[string]string{}
 		for _, seg := range segs {
-			k, v := sdstr.Split2s(seg, "=")
+			k, v := sdstrings.Split2s(seg, "=")
 			k, v = strings.TrimSpace(k), strings.TrimSpace(v)
 			if k != "" {
 				m[k] = ifEmptyAs(v, "true")
@@ -118,7 +118,7 @@ func parseFile(outFn string) (io.Writer, error) {
 	case "null":
 		return io.Discard, nil
 	default:
-		fn, options := sdstr.Split2s(outFn, "|")
+		fn, options := sdstrings.Split2s(outFn, "|")
 		fn, options = strings.TrimSpace(fn), strings.TrimSpace(options)
 		absFn, err := absPath(fn)
 		if err != nil {

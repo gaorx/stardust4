@@ -1,4 +1,4 @@
-package sdstr
+package sdstrings
 
 import (
 	"strings"

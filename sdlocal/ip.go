@@ -14,6 +14,18 @@ func (p IPPredicate) Not() IPPredicate {
 	}
 }
 
+func NetInterfaceNames() ([]string, error) {
+	ifaces, err := net.Interfaces()
+	if err != nil {
+		return nil, sderr.Wrap(err, "get net interfaces error")
+	}
+	var ifaceNames []string
+	for _, iface := range ifaces {
+		ifaceNames = append(ifaceNames, iface.Name)
+	}
+	return ifaceNames, nil
+}
+
 func IPs(predicates ...IPPredicate) ([]net.IP, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
@@ -65,7 +77,7 @@ func IPString(predicates ...IPPredicate) string {
 
 func PrivateIP4String(ifaceNames ...string) string {
 	if len(ifaceNames) > 0 {
-		return IPString(Is4(), IsPrivate(), IfaceNameIn(ifaceNames...))
+		return IPString(Is4(), IsPrivate(), NameIn(ifaceNames...))
 	} else {
 		return IPString(Is4(), IsPrivate())
 	}
@@ -80,13 +92,13 @@ func Is4() IPPredicate {
 	}
 }
 
-func IfaceNameIs(ifaceName string) IPPredicate {
+func NameIs(ifaceName string) IPPredicate {
 	return func(iface net.Interface, ip net.IP) bool {
 		return iface.Name == ifaceName
 	}
 }
 
-func IfaceNameIn(ifaceNames ...string) IPPredicate {
+func NameIn(ifaceNames ...string) IPPredicate {
 	return func(iface net.Interface, ip net.IP) bool {
 		for _, ifaceName := range ifaceNames {
 			if iface.Name == ifaceName {
