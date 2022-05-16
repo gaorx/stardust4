@@ -6,7 +6,9 @@ require (
 	github.com/cenkalti/backoff/v4 v4.1.3
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/iancoleman/strcase v0.2.0
+	github.com/mattn/go-shellwords v1.0.12
 	github.com/panjf2000/ants/v2 v2.5.0
+	github.com/pierrec/lz4/v4 v4.1.14
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.21.0
 	github.com/sirupsen/logrus v1.8.1
