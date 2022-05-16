@@ -2,6 +2,7 @@ package sdlocal
 
 import (
 	"os"
+	"os/user"
 	"runtime"
 )
 
@@ -11,6 +12,14 @@ func Hostname() string {
 		return ""
 	}
 	return hn
+}
+
+func HomeDir() string {
+	usr, err := user.Current()
+	if err != nil {
+		return ""
+	}
+	return usr.HomeDir
 }
 
 func OS() string {

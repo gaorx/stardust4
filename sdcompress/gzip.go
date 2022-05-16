@@ -35,15 +35,15 @@ func Gzip(data []byte, level GzipLevel) ([]byte, error) {
 	buff := new(bytes.Buffer)
 	w, err := gzip.NewWriterLevel(buff, int(level))
 	if err != nil {
-		return nil, sderr.Wrapf(err, "gzip: make writer error: %d", level)
+		return nil, sderr.Wrapf(err, "sdcompress.Gzip: make writer error: %d", level)
 	}
 	_, err = w.Write(data)
 	if err != nil {
-		return nil, sderr.Wrap(err, "gzip: write error")
+		return nil, sderr.Wrap(err, "sdcompress.Gzip: write error")
 	}
 	err = w.Close()
 	if err != nil {
-		return nil, sderr.Wrap(err, "gzip: close error")
+		return nil, sderr.Wrap(err, "sdcompress.Gzip: close error")
 	}
 	return buff.Bytes(), nil
 }

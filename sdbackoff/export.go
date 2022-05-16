@@ -87,5 +87,5 @@ func Retry(b BackOff, action func() error) error {
 		return sderr.New("nil action")
 	}
 	err := backoff.Retry(action, b)
-	return sderr.Wrap(err, "retry with backoff error")
+	return sderr.Wrap(err, "sdbackoff.Retry: retry error")
 }
