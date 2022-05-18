@@ -2,8 +2,6 @@ package sdcall
 
 import (
 	"sync"
-
-	"github.com/gaorx/stardust4/sderr"
 )
 
 func Parallel(concurrent int, actions []func()) error {
@@ -17,7 +15,7 @@ func Parallel(concurrent int, actions []func()) error {
 			wg.Add(1)
 			go func(f func()) {
 				defer wg.Done()
-				Safe(f)
+				_ = Safe(f)
 			}(f)
 		}
 		wg.Wait()
@@ -30,19 +28,19 @@ func Parallel(concurrent int, actions []func()) error {
 			PreAlloc: true,
 		})
 		if err != nil {
-			return sderr.WithStack(err)
+			return err
 		}
-		defer pool.Close()
+		defer func() { _ = pool.Close() }()
 		var wg sync.WaitGroup
 		for _, f := range actions {
 			f1 := f
 			wg.Add(1)
 			err := pool.Submit(func() {
 				defer wg.Done()
-				Safe(f1)
+				_ = Safe(f1)
 			})
 			if err != nil {
-				return sderr.WithStack(err)
+				return err
 			}
 		}
 		wg.Wait()

@@ -41,7 +41,7 @@ func NewFromIP() (*Node, error) {
 	// IP后10位作为node
 	ip, err := sdlocal.IP(sdlocal.Is4(), sdlocal.IsPrivate())
 	if err != nil {
-		return nil, sderr.Wrap(err, "snowflake: get local ip error")
+		return nil, sderr.Wrap(err, "sdsnowflake get local ip error")
 	}
 	var node int64 = 0
 	if ip != nil {

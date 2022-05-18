@@ -9,16 +9,16 @@ import (
 
 func HttpReadBytes(hfs http.FileSystem, name string) ([]byte, error) {
 	if hfs == nil {
-		return nil, sderr.New("nil hfs")
+		return nil, sderr.New("sdhttpfile nil hfs")
 	}
 	f, err := hfs.Open(name)
 	if err != nil {
-		return nil, sderr.Wrap(err, "sdhttpfile read bytes: open file error")
+		return nil, sderr.Wrap(err, "sdhttpfile open error")
 	}
 	defer func() { _ = f.Close() }()
 	r, err := ioutil.ReadAll(f)
 	if err != nil {
-		return nil, sderr.Wrap(err, "sdhttpfile read bytes: read file error")
+		return nil, sderr.Wrap(err, "sdhttpfile read error")
 	}
 	return r, nil
 }

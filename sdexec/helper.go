@@ -13,11 +13,11 @@ import (
 func run(c *exec.Cmd, timeout time.Duration) error {
 	if timeout <= 0 {
 		err := c.Run()
-		return sderr.Wrap(err, "sdexec run: run error")
+		return sderr.Wrap(err, "sdexec run error")
 	} else {
 		err := c.Start()
 		if err != nil {
-			return sderr.Wrap(err, "sdexec run: start error")
+			return sderr.Wrap(err, "sdexec start error")
 		}
 		done := make(chan error)
 		go func() { done <- c.Wait() }()
@@ -29,7 +29,7 @@ func run(c *exec.Cmd, timeout time.Duration) error {
 			}
 			return ErrTimeout
 		case err := <-done:
-			return sderr.Wrap(err, "sdedec run: run error (with timeout)")
+			return sderr.Wrap(err, "sdexec run error (with timeout)")
 		}
 	}
 }

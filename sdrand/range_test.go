@@ -40,7 +40,7 @@ func newCounter[T comparable]() counter[T] {
 }
 
 func (c counter[T]) size() int {
-	return int(len(c.data))
+	return len(c.data)
 }
 
 func (c *counter[T]) inc(v T) {

@@ -20,15 +20,15 @@ func (e *CRC32Encrypter) Encrypt(key, data []byte) ([]byte, error) {
 	binary.LittleEndian.PutUint32(sumBytes, crc32.ChecksumIEEE(data))
 	r, err := e.Encrypter.Encrypt(key, append(data, sumBytes...))
 	if err != nil {
-		return nil, sderr.Wrap(err, "sdcrypto crc32: encrypt error")
+		return nil, sderr.Wrap(err, "sdcrypto crc32 encrypt error")
 	}
 	return r, nil
 }
 
-func (e *CRC32Encrypter) Decrypt(key, crypted []byte) ([]byte, error) {
-	decrypted, err := e.Encrypter.Decrypt(key, crypted)
+func (e *CRC32Encrypter) Decrypt(key, encrypted []byte) ([]byte, error) {
+	decrypted, err := e.Encrypter.Decrypt(key, encrypted)
 	if err != nil {
-		return nil, sderr.Wrap(err, "adcrypto crc32: decrypt error")
+		return nil, sderr.Wrap(err, "sdcrypto crc32 decrypt error")
 	}
 	n := len(decrypted)
 	if n < 4 {

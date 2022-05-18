@@ -20,14 +20,14 @@ func absPath(path string) (string, error) {
 	if strings.HasPrefix(path, "~") {
 		home, err := os.UserHomeDir()
 		if err != nil {
-			return "", sderr.Wrap(err, "get home directory error for sdlog")
+			return "", sderr.Wrap(err, "sdlog get home directory error")
 		}
 		path = home + strings.TrimPrefix(path, "~")
 	}
 
 	abs, err := filepath.Abs(path)
 	if err != nil {
-		return "", sderr.Wrap(err, "compute log absolute path error")
+		return "", sderr.Wrap(err, "sdlog compute log absolute path error")
 	}
 	return abs, nil
 }

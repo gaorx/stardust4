@@ -2,43 +2,46 @@ package sderr
 
 import (
 	"github.com/hashicorp/go-multierror"
-	"github.com/pkg/errors"
+	"github.com/rotisserie/eris"
 )
 
 // export types
 type (
-	Frame         = errors.Frame
-	StackTrace    = errors.StackTrace
+	StackFrame    = eris.StackFrame
+	Stack         = eris.Stack
 	MultipleError = multierror.Error
 )
 
-// create errors
+// export errors
+
 var (
-	New          = errors.New
-	Newf         = errors.Errorf
-	Wrap         = errors.Wrap
-	Wrapf        = errors.Wrapf
-	WithMessage  = errors.WithMessage
-	WithMessagef = errors.WithMessagef
-	WithStack    = errors.WithStack
+	New   = eris.New
+	Newf  = eris.Errorf
+	Wrap  = eris.Wrap
+	Wrapf = eris.Wrapf
 )
 
 // errors
+
+func WithStack(err error) error {
+	return Wrap(err, "with stack")
+}
+
 func Cause(err error) error {
-	return errors.Cause(err)
+	return eris.Cause(err)
 }
 
 func Unwrap(err error) error {
-	return errors.Unwrap(err)
+	return eris.Unwrap(err)
 }
 
 func Is(err, target error) bool {
-	return errors.Is(err, target)
+	return eris.Is(err, target)
 }
 
 func As[E error](err error) (E, bool) {
 	var e E
-	if errors.As(err, &e) {
+	if eris.As(err, &e) {
 		return e, true
 	} else {
 		return e, false
@@ -65,11 +68,11 @@ func ToErr(v any) error {
 }
 
 func Multiple(errs []error) error {
-	var merr error = nil
+	var merged error = nil
 	for _, err := range errs {
 		if err != nil {
-			merr = Append(merr, err)
+			merged = Append(merged, err)
 		}
 	}
-	return merr
+	return merged
 }

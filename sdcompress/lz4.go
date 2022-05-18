@@ -40,30 +40,30 @@ var (
 
 func Lz4(data []byte, level Lz4Level) ([]byte, error) {
 	if data == nil {
-		return nil, sderr.New("nil data")
+		return nil, sderr.New("sdcompress lz4 nil data")
 	}
 	buff := new(bytes.Buffer)
 	w := lz4.NewWriter(buff)
-	w.Apply(lz4.CompressionLevelOption(lz4.CompressionLevel(level)))
+	_ = w.Apply(lz4.CompressionLevelOption(lz4.CompressionLevel(level)))
 	_, err := w.Write(data)
 	if err != nil {
-		return nil, sderr.Wrap(err, "lz4: write error")
+		return nil, sderr.Wrap(err, "sdcompress lz4 write error")
 	}
 	err = w.Close()
 	if err != nil {
-		return nil, sderr.Wrap(err, "lz4: close error")
+		return nil, sderr.Wrap(err, "sdcompress lz4 close error")
 	}
 	return buff.Bytes(), nil
 }
 
 func Unlz4(data []byte) ([]byte, error) {
 	if data == nil {
-		return nil, sderr.New("unlz4: nil data")
+		return nil, sderr.New("sdcompress unlz4 nil data")
 	}
 	r := lz4.NewReader(bytes.NewReader(data))
 	to, err := ioutil.ReadAll(r)
 	if err != nil {
-		return nil, sderr.Wrap(err, "unlz4: read error")
+		return nil, sderr.Wrap(err, "sdcompress unlz4 read error")
 	}
 	return to, nil
 }

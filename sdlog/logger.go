@@ -30,8 +30,9 @@ type Output struct {
 
 func New(config Config) (*Logger, error) {
 	l := logrus.New()
-	if err := setup(l, &config); err != nil {
-		return nil, sderr.Wrap(err, "setup log error")
+	err := setup(l, &config)
+	if err != nil {
+		return nil, err
 	}
 	return l, nil
 }
@@ -39,7 +40,7 @@ func New(config Config) (*Logger, error) {
 func setup(l *Logger, config *Config) error {
 	level, err := ParseLevel(ifEmptyAs(config.Level, "debug"))
 	if err != nil {
-		return sderr.Wrap(err, "parse log level error")
+		return sderr.Wrap(err, "sdlog parse log level error")
 	}
 	output, err := parseFile(config.File)
 	if err != nil {
@@ -86,9 +87,9 @@ func parseFile(outFn string) (io.Writer, error) {
 		if s == "" {
 			return map[string]string{}
 		}
-		segs := strings.Split(s, ",")
+		segments := strings.Split(s, ",")
 		m := map[string]string{}
-		for _, seg := range segs {
+		for _, seg := range segments {
 			k, v := sdstrings.Split2s(seg, "=")
 			k, v = strings.TrimSpace(k), strings.TrimSpace(v)
 			if k != "" {
@@ -143,7 +144,7 @@ type outputHook struct {
 func newOutputHook(o Output) (outputHook, error) {
 	level, err := ParseLevel(ifEmptyAs(o.Level, "trace"))
 	if err != nil {
-		return outputHook{}, sderr.Wrap(err, "parse log level error")
+		return outputHook{}, sderr.Wrap(err, "sdlog parse log level error")
 	}
 	output, err := parseFile(o.File)
 	if err != nil {

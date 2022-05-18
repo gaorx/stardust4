@@ -11,7 +11,7 @@ import (
 func ReadBytes(filename string) ([]byte, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return nil, sderr.Wrap(err, "sdfile read bytes error")
+		return nil, sderr.Wrap(err, "sdfile read error")
 	}
 	return data, nil
 }
@@ -26,26 +26,26 @@ func ReadBytesDef(filename string, def []byte) []byte {
 
 func WriteBytes(filename string, data []byte, perm os.FileMode) error {
 	err := ioutil.WriteFile(filename, data, perm)
-	return sderr.Wrap(err, "sdfile write bytes error")
+	return sderr.Wrap(err, "sdfile write error")
 }
 
 func AppendBytes(filename string, data []byte, perm os.FileMode) error {
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, perm)
 	if err != nil {
-		return sderr.Wrap(err, "sdfile append bytes: open file error")
+		return sderr.Wrap(err, "sdfile open for append error")
 	}
 	n, err := f.Write(data)
 	if err == nil && n < len(data) {
 		err = io.ErrShortWrite
 	}
 	_ = f.Close()
-	return sderr.Wrap(err, "sdfile append bytes: write error")
+	return sderr.Wrap(err, "sdfile write for append error")
 }
 
 func ReadText(filename string) (string, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return "", sderr.Wrap(err, "sdfile read text: read file erro")
+		return "", sderr.Wrap(err, "sdfile read text error")
 	}
 	return string(data), nil
 }

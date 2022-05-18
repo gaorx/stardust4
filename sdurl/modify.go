@@ -11,7 +11,7 @@ type Modifier func(u *url.URL)
 func Modify(rawUrl string, modifiers ...Modifier) (string, error) {
 	u, err := url.Parse(rawUrl)
 	if err != nil {
-		return "", sderr.Wrap(err, "parse url for modify error")
+		return "", sderr.Wrap(err, "sdurl parse url for modify error")
 	}
 	for _, f := range modifiers {
 		if f != nil {

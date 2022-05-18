@@ -19,9 +19,9 @@ func TestAES(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, sdbytes.Equal(data0, data2))
 
-	data3, err := AES_CRC32.Encrypt(key, data0)
+	data3, err := AESCRC32.Encrypt(key, data0)
 	assert.NoError(t, err)
-	data4, err := AES_CRC32.Decrypt(key, data3)
+	data4, err := AESCRC32.Decrypt(key, data3)
 	assert.NoError(t, err)
 	assert.True(t, sdbytes.Equal(data0, data4))
 }

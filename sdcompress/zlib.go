@@ -30,37 +30,37 @@ var (
 
 func Zip(data []byte, level ZlibLevel) ([]byte, error) {
 	if data == nil {
-		return nil, sderr.New("zip: nil data")
+		return nil, sderr.New("sdcompress zip nil data")
 	}
 	buff := new(bytes.Buffer)
 	w, err := zlib.NewWriterLevel(buff, int(level))
 	if err != nil {
-		return nil, sderr.Wrapf(err, "zip: make writer error: %d", level)
+		return nil, sderr.Wrapf(err, "sdcompress zip make writer error(%d)", level)
 	}
 	_, err = w.Write(data)
 	if err != nil {
-		return nil, sderr.Wrap(err, "zip: write error")
+		return nil, sderr.Wrap(err, "sdcompress zip write error")
 	}
 	err = w.Close()
 	if err != nil {
-		return nil, sderr.Wrap(err, "zip: close erro")
+		return nil, sderr.Wrap(err, "sdcompress zip close error")
 	}
 	return buff.Bytes(), nil
 }
 
 func Unzip(data []byte) ([]byte, error) {
 	if data == nil {
-		return nil, sderr.New("unzip: nil data")
+		return nil, sderr.New("sdcompress unzip nil data")
 	}
 	r, err := zlib.NewReader(bytes.NewReader(data))
 	if err != nil {
-		return nil, sderr.Wrap(err, "unzip: make reader error")
+		return nil, sderr.Wrap(err, "sdcompress unzip make reader error")
 	}
 	defer func() { _ = r.Close() }()
 
 	to, err := ioutil.ReadAll(r)
 	if err != nil {
-		return nil, sderr.Wrap(err, "unzip: read error")
+		return nil, sderr.Wrap(err, "sdcompress unzip read error")
 	}
 	return to, nil
 }

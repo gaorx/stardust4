@@ -1,2 +1,2 @@
-// 日期和时间扩展
+// Package sdtime 日期和时间扩展
 package sdtime

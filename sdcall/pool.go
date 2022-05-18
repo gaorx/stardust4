@@ -22,13 +22,13 @@ var (
 )
 
 func NewPool(size int, opts *PoolOptions) (*Pool, error) {
-	antsOpts := []ants.Option{}
+	var antsOpts []ants.Option
 	if opts != nil {
 		antsOpts = append(antsOpts, ants.WithOptions(*opts))
 	}
 	p, err := ants.NewPool(size, antsOpts...)
 	if err != nil {
-		return nil, sderr.Wrap(err, "sdcall.NewPool: create pool error")
+		return nil, sderr.Wrap(err, "sdcall create ants pool error")
 	}
 	return &Pool{pool: p}, nil
 }
@@ -55,7 +55,7 @@ func (p *Pool) Submit(action func()) error {
 		return nil
 	}
 	err := p.pool.Submit(action)
-	return sderr.Wrap(err, "sdpool.Pool.Submit: submit action error")
+	return sderr.Wrap(err, "sdcall submit action error")
 }
 
 func (p *Pool) Do(action func()) error {

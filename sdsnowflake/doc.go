@@ -1,2 +1,2 @@
-// Snowflake算法
+// Package sdsnowflake Snowflake算法实现
 package sdsnowflake

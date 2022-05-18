@@ -17,7 +17,7 @@ func (p IPPredicate) Not() IPPredicate {
 func NetInterfaceNames() ([]string, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
-		return nil, sderr.Wrap(err, "get net interfaces error")
+		return nil, sderr.Wrap(err, "sdlocal get net interfaces error")
 	}
 	var ifaceNames []string
 	for _, iface := range ifaces {
@@ -29,7 +29,7 @@ func NetInterfaceNames() ([]string, error) {
 func IPs(predicates ...IPPredicate) ([]net.IP, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
-		return nil, sderr.Wrap(err, "get net interfaces error")
+		return nil, sderr.Wrap(err, "sdlocal get net interfaces error")
 	}
 	var ips []net.IP
 	for _, iface := range ifaces {
@@ -50,7 +50,7 @@ func IPs(predicates ...IPPredicate) ([]net.IP, error) {
 func IP(predicates ...IPPredicate) (net.IP, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
-		return nil, sderr.Wrap(err, "get net interfaces error")
+		return nil, sderr.Wrap(err, "sdlocal get net interfaces error")
 	}
 	for _, iface := range ifaces {
 		addrs, err := iface.Addrs()

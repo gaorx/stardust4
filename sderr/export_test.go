@@ -2,8 +2,10 @@ package sderr
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
+	stderrors "errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,7 +35,40 @@ func TestIsAndAs(t *testing.T) {
 	root2b, ok := As[myErr1](err2)
 	assert.False(t, ok)
 	assert.Equal(t, myErr1{}, root2b)
+
+	// std errors 兼容性
+	root3 := stderrors.New("xxx")
+	wrap3 := Wrap(root3, "yyy")
+	assert.True(t, stderrors.Is(wrap3, root3))
+	assert.True(t, Cause(wrap3) == root3)
+	assert.True(t, Unwrap(wrap3) == root3)
+	assert.True(t, stderrors.Unwrap(wrap3) == root3)
+
+	// 测试消息1
+	root4 := New("xxx")
+	wrap4a := Wrap(root4, "yyy")
+	wrap4b := Wrap(wrap4a, "zzz")
+	assert.True(t, strings.Contains(wrap4b.Error(), "xxx"))
+	assert.True(t, strings.Contains(wrap4b.Error(), "yyy"))
+	assert.True(t, strings.Contains(wrap4b.Error(), "zzz"))
+
+	// 测试消息1
+	root5 := stderrors.New("aaa")
+	wrap5a := Wrap(root5, "bbb")
+	wrap5b := Wrap(wrap5a, "ccc")
+	assert.True(t, strings.Contains(wrap5b.Error(), "aaa"))
+	assert.True(t, strings.Contains(wrap5b.Error(), "bbb"))
+	assert.True(t, strings.Contains(wrap5b.Error(), "ccc"))
+
+	//root6 := stderrors.New("xxx")
+	//wrap6a := foo(root6, "")
+	//wrap6b := foo(wrap6a, "yyy")
+	//fmt.Println(eris.ToString(wrap6b, true))
 }
+
+//func foo(err error, msg string) error {
+//	return Wrap(err, msg)
+//}
 
 type myErr1 struct {
 	Code int

@@ -18,7 +18,7 @@ type Cmd struct {
 func Parse(line string) (*Cmd, error) {
 	l, err := shellwords.Parse(line)
 	if err != nil {
-		return nil, sderr.Wrap(err, "sdexec parse: parse command error")
+		return nil, sderr.Wrap(err, "sdexec parse command error")
 	}
 	c := &Cmd{}
 	if len(l) > 0 {

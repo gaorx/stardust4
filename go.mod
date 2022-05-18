@@ -3,6 +3,7 @@ module github.com/gaorx/stardust4
 go 1.18
 
 require (
+	github.com/BurntSushi/toml v1.1.0
 	github.com/cenkalti/backoff/v4 v4.1.3
 	github.com/h2non/filetype v1.1.3
 	github.com/hashicorp/go-multierror v1.1.1
@@ -19,10 +20,10 @@ require (
 )
 
 require (
-	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/rotisserie/eris v0.5.4 // indirect
 	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/sys v0.0.0-20211019181941-9d821ace8654 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect

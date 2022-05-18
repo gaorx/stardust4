@@ -1,2 +1,2 @@
-// sync扩展
+// Package sdsync sync扩展
 package sdsync
