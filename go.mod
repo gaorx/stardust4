@@ -11,7 +11,7 @@ require (
 	github.com/mattn/go-shellwords v1.0.12
 	github.com/panjf2000/ants/v2 v2.5.0
 	github.com/pierrec/lz4/v4 v4.1.14
-	github.com/pkg/errors v0.9.1
+	github.com/rotisserie/eris v0.5.4
 	github.com/samber/lo v1.21.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.1
@@ -21,9 +21,10 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
+	github.com/mssola/user_agent v0.5.3 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/rotisserie/eris v0.5.4 // indirect
 	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/sys v0.0.0-20211019181941-9d821ace8654 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect

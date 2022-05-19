@@ -24,7 +24,7 @@ var (
 // errors
 
 func WithStack(err error) error {
-	return Wrap(err, "with stack")
+	return Wrap(err, "")
 }
 
 func Cause(err error) error {

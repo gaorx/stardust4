@@ -77,7 +77,7 @@ func IPString(predicates ...IPPredicate) string {
 
 func PrivateIP4String(ifaceNames ...string) string {
 	if len(ifaceNames) > 0 {
-		return IPString(Is4(), IsPrivate(), NameIn(ifaceNames...))
+		return IPString(Is4(), IsPrivate(), NameIs(ifaceNames[0], ifaceNames[1:]...))
 	} else {
 		return IPString(Is4(), IsPrivate())
 	}
@@ -92,16 +92,13 @@ func Is4() IPPredicate {
 	}
 }
 
-func NameIs(ifaceName string) IPPredicate {
+func NameIs(ifaceName string, others ...string) IPPredicate {
 	return func(iface net.Interface, ip net.IP) bool {
-		return iface.Name == ifaceName
-	}
-}
-
-func NameIn(ifaceNames ...string) IPPredicate {
-	return func(iface net.Interface, ip net.IP) bool {
-		for _, ifaceName := range ifaceNames {
-			if iface.Name == ifaceName {
+		if iface.Name == ifaceName {
+			return true
+		}
+		for _, other := range others {
+			if iface.Name == other {
 				return true
 			}
 		}
