@@ -2,6 +2,7 @@ package sdload
 
 import (
 	"encoding/json"
+	"gopkg.in/yaml.v3"
 	"net/url"
 
 	"github.com/BurntSushi/toml"
@@ -57,6 +58,19 @@ func TOML[T any](loc string, v any) (T, error) {
 	err = toml.Unmarshal(data, &r)
 	if err != nil {
 		return empty, sderr.Wrap(err, "sdload parse TOML error")
+	}
+	return r, nil
+}
+
+func YAML[T any](loc string, v any) (T, error) {
+	var empty, r T
+	data, err := Bytes(loc)
+	if err != nil {
+		return empty, err
+	}
+	err = yaml.Unmarshal(data, &r)
+	if err != nil {
+		return empty, sderr.Wrap(err, "sdload parse YAML error")
 	}
 	return r, nil
 }

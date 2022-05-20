@@ -13,23 +13,23 @@ import (
 
 type Address struct {
 	// common
-	Driver string `json:"driver" toml:"driver"`
-	DSN    string `json:"dsn" toml:"dsn"`
+	Driver string `json:"driver" toml:"driver" yaml:"driver"`
+	DSN    string `json:"dsn" toml:"dsn" yaml:"dsn"`
 
 	// mysql
 	MySqlConn                      gorm.ConnPool `json:"-" toml:"-"`
-	MySqlSkipInitializeWithVersion bool          `json:"mysql_skip_initialize_with_version" toml:"mysql_skip_initialize_with_version"`
-	MySqlDefaultStringSize         uint          `json:"mysql_default_string_size" toml:"mysql_default_string_size"`
-	MySqlDefaultDatetimePrecision  *int          `json:"mysql_default_datetime_precision" toml:"mysql_default_datetime_precision"`
-	MySqlDisableDatetimePrecision  bool          `json:"mysql_disable_datetime_precision" toml:"mysql_disable_datetime_precision"`
-	MySqlDontSupportRenameIndex    bool          `json:"mysql_dont_support_rename_index" toml:"mysql_dont_support_rename_index"`
-	MySqlDontSupportRenameColumn   bool          `json:"mysql_dont_support_rename_column" toml:"mysql_dont_support_rename_column"`
-	MySqlDontSupportForShareClause bool          `json:"mysql_dont_support_for_share_clause" toml:"mysql_dont_support_for_share_clause"`
+	MySqlSkipInitializeWithVersion bool          `json:"mysql_skip_initialize_with_version" toml:"mysql_skip_initialize_with_version" yaml:"mysql_skip_initialize_with_version"`
+	MySqlDefaultStringSize         uint          `json:"mysql_default_string_size" toml:"mysql_default_string_size" yaml:"mysql_default_string_size"`
+	MySqlDefaultDatetimePrecision  *int          `json:"mysql_default_datetime_precision" toml:"mysql_default_datetime_precision" yaml:"mysql_default_datetime_precision"`
+	MySqlDisableDatetimePrecision  bool          `json:"mysql_disable_datetime_precision" toml:"mysql_disable_datetime_precision" yaml:"mysql_disable_datetime_precision"`
+	MySqlDontSupportRenameIndex    bool          `json:"mysql_dont_support_rename_index" toml:"mysql_dont_support_rename_index" yaml:"mysql_dont_support_rename_index"`
+	MySqlDontSupportRenameColumn   bool          `json:"mysql_dont_support_rename_column" toml:"mysql_dont_support_rename_column" yaml:"mysql_dont_support_rename_column"`
+	MySqlDontSupportForShareClause bool          `json:"mysql_dont_support_for_share_clause" toml:"mysql_dont_support_for_share_clause" yaml:"mysql_dont_support_for_share_clause"`
 
 	// postgres
 	PostgresConn                 *sql.DB `json:"-" toml:"-"`
-	PostgresPreferSimpleProtocol bool    `json:"postgres_prefer_simple_protocol" toml:"postgres_prefer_simple_protocol"`
-	PostgresWithoutReturning     bool    `json:"postgres_without_returning" toml:"postgres_without_returning"`
+	PostgresPreferSimpleProtocol bool    `json:"postgres_prefer_simple_protocol" toml:"postgres_prefer_simple_protocol" yaml:"postgres_prefer_simple_protocol"`
+	PostgresWithoutReturning     bool    `json:"postgres_without_returning" toml:"postgres_without_returning" yaml:"postgres_without_returning"`
 }
 
 var (

@@ -22,6 +22,15 @@ func Transaction[R any](db *gorm.DB, action func(tx *gorm.DB) (R, error), opts .
 	return r, nil
 }
 
+func GetByID[T any](tx *gorm.DB, id any) (T, error) {
+	var r T
+	dbr := tx.First(&r, id)
+	if dbr.Error != nil {
+		return r, dbr.Error
+	}
+	return r, nil
+}
+
 func First[T any](tx *gorm.DB) (T, error) {
 	var r T
 	dbr := tx.First(&r)
