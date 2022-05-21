@@ -6,14 +6,15 @@ import (
 )
 
 type Result struct {
-	template     *ResultTemplate
-	Code         any
-	Data         any
-	ErrorMessage string
-	ErrorStack   []string
-	Facade       any
-	Fields       map[string]any
-	Renderer     Renderer
+	template       *ResultTemplate
+	HttpStatusCode int
+	Code           any
+	Data           any
+	ErrorMessage   string
+	ErrorStack     []string
+	Facade         any
+	Fields         map[string]any
+	Renderer       Renderer
 }
 
 func (r *Result) IsOk() bool {
@@ -22,6 +23,11 @@ func (r *Result) IsOk() bool {
 
 func (r *Result) Template() *ResultTemplate {
 	return r.template
+}
+
+func (r *Result) WithHttpStatusCode(statusCode int) *Result {
+	r.HttpStatusCode = statusCode
+	return r
 }
 
 func (r *Result) WithFacade(facade any) *Result {

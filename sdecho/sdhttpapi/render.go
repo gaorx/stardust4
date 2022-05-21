@@ -1,6 +1,7 @@
 package sdhttpapi
 
 import (
+	"net/http"
 	"reflect"
 
 	"github.com/gaorx/stardust4/sdecho"
@@ -62,11 +63,15 @@ func RenderJSON(c echo.Context, r *Result) error {
 		}
 	}
 
+	httpStatusCode := r.HttpStatusCode
+	if r.HttpStatusCode <= 0 {
+		httpStatusCode = http.StatusOK
+	}
 	jsonpCallback := c1.ArgString("_callback", "")
 	if jsonpCallback != "" {
-		return c.JSONP(200, jsonpCallback, o)
+		return c.JSONP(httpStatusCode, jsonpCallback, o)
 	} else {
-		return c.JSON(200, o)
+		return c.JSON(httpStatusCode, o)
 	}
 }
 
