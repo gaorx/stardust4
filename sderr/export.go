@@ -1,6 +1,9 @@
 package sderr
 
 import (
+	"runtime"
+	"strings"
+
 	"github.com/hashicorp/go-multierror"
 	"github.com/rotisserie/eris"
 )
@@ -8,7 +11,6 @@ import (
 // export types
 type (
 	StackFrame    = eris.StackFrame
-	Stack         = eris.Stack
 	MultipleError = multierror.Error
 )
 
@@ -53,6 +55,32 @@ func Append(err error, errs ...error) error {
 }
 
 // Utils
+
+func StackOf(err error) []StackFrame {
+	if err == nil {
+		return []StackFrame{}
+	}
+	rawFrames := eris.StackFrames(err)
+	if len(rawFrames) <= 0 {
+		return []StackFrame{}
+	}
+	var frames []StackFrame
+	callersFrames := runtime.CallersFrames(rawFrames)
+	for {
+		callerFrames, more := callersFrames.Next()
+		i := strings.LastIndex(callerFrames.Function, "/")
+		name := callerFrames.Function[i+1:]
+		frames = append(frames, StackFrame{
+			Name: name,
+			File: callerFrames.File,
+			Line: callerFrames.Line,
+		})
+		if !more {
+			break
+		}
+	}
+	return frames
+}
 
 func ToErr(v any) error {
 	switch err := v.(type) {

@@ -1,5 +1,12 @@
 package sdlo
 
+func SliceNilToEmpty[T any](s []T) []T {
+	if s == nil {
+		return make([]T, 0)
+	}
+	return s
+}
+
 func SliceCopy[T any](src []T) []T {
 	if src == nil {
 		return nil
