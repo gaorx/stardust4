@@ -54,7 +54,7 @@ func RenderJSON(c echo.Context, r *Result) error {
 	} else {
 		o = sdjson.Object{"code": r.Code, "error_msg": r.ErrorMessage}
 		if c1.Echo().Debug && c1.ArgBool("_error_stack", false) {
-			o["error_stack"] = sdlo.SliceNilToEmpty(r.ErrorStack)
+			o["error_stack"] = sdlo.SliceNilAsEmpty(r.ErrorStack)
 		}
 	}
 	for k, v := range r.Fields {

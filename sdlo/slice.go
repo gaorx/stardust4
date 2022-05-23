@@ -1,6 +1,6 @@
 package sdlo
 
-func SliceNilToEmpty[T any](s []T) []T {
+func SliceNilAsEmpty[T any](s []T) []T {
 	if s == nil {
 		return make([]T, 0)
 	}
