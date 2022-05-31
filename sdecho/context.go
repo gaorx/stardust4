@@ -8,6 +8,14 @@ type Context struct {
 	echo.Context
 }
 
+func C(c echo.Context) Context {
+	if c1, ok := c.(Context); ok {
+		return c1
+	} else {
+		return Context{c}
+	}
+}
+
 func WrapHandler(f func(Context) error) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		return f(Context{c})
