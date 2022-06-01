@@ -6,6 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSplitNonempty(t *testing.T) {
+	assert.Empty(t, SplitNonempty("", ",", false))
+	assert.Empty(t, SplitNonempty(",", ",", false))
+	assert.Empty(t, SplitNonempty(",,", ",", false))
+	assert.Equal(t, []string{"a", "b"}, SplitNonempty(",a,,b", ",", false))
+	assert.Equal(t, []string{"a", "b"}, SplitNonempty(", a , , b", ",", true))
+}
+
 func TestSplit2s(t *testing.T) {
 	var s1, s2 string
 

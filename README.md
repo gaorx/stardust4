@@ -1,8 +1,8 @@
 
 # STARDUST4
 
-My golang tookit
+My golang toolkit
 
-* [x] sderr
-* [x] sdlog
-* [x] sdlocal
+* [ ] sdkafka
+* [ ] sdzk
+* [ ] sdtaskcron

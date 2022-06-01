@@ -7,6 +7,10 @@ var resultTemplate = &ResultTemplate{
 	Renderer:         nil,
 }
 
+func DefaultResultTemplate() *ResultTemplate {
+	return resultTemplate
+}
+
 func SetCodeOk(code any) {
 	resultTemplate.CodeOk = code
 }

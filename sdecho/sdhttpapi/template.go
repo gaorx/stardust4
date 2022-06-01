@@ -21,6 +21,10 @@ func (rt *ResultTemplate) Ok(data any) *Result {
 }
 
 func (rt *ResultTemplate) Err(err any) *Result {
+	if err == nil {
+		return Ok(nil)
+	}
+
 	extractor := rt.ErrorExtractor
 	if extractor == nil {
 		extractor = defaultErrorExtractor

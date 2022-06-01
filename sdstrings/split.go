@@ -4,6 +4,20 @@ import (
 	"strings"
 )
 
+func SplitNonempty(s, sep string, trimSpace bool) []string {
+	r0 := strings.Split(s, sep)
+	r1 := make([]string, 0, len(r0))
+	for _, a := range r0 {
+		if trimSpace {
+			a = strings.TrimSpace(a)
+		}
+		if a != "" {
+			r1 = append(r1, a)
+		}
+	}
+	return r1
+}
+
 func Split2s(s, sep string) (string, string) {
 	if s == "" {
 		return "", ""
